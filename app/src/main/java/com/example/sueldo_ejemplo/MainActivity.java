@@ -52,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplication(), "Redondeo", Toast.LENGTH_SHORT).show();
                 } else if (checkedID == R.id.rbNoRedondeo) {
                     Toast.makeText(getApplication(), "Sin Redondeo", Toast.LENGTH_SHORT).show();
+                    //EditText TD=(EditText) findViewById(R.id.lbl_dcto);
+                    //EditText TP=(EditText) findViewById(R.id.lbl_pago);
+                    double tD=Double.parseDouble(lbl_dcto.getText().toString());
+                    double tP=Double.parseDouble(lbl_pago.getText().toString());
+                    lbl_dcto.setText(String.valueOf(tD));
+                    lbl_pago.setText(String.valueOf(tP));
                 }
             }
         });
@@ -84,30 +90,33 @@ public class MainActivity extends AppCompatActivity {
  */
     }
 
+    public class GlobalInfo {
+
+    }
 
     public void calcular(View view) {
         try {
             // stuff that could cause error
-            int sueldo = Integer.parseInt(txtSueldo.getText().toString());
-            int descuento = Integer.parseInt(txtDescuento.getText().toString());
-            int horas = Integer.parseInt(txtHoras.getText().toString());
-            int afp_salud = (sueldo * 20) / 100;    //20% de descuento sobre el sueldo
-            int vH = (sueldo / 160);              //Valor por hora
-            int vD = (vH * 8);                    //Valor por dia
-            int vA1 = 0, vA2 = 0, tD = 0, tP = 0;       //Variables auxiliar
+            double sueldo = Double.valueOf(txtSueldo.getText().toString());
+            double descuento = Double.valueOf(txtDescuento.getText().toString());
+            double horas = Double.valueOf(txtHoras.getText().toString());
+            double afp_salud = (sueldo * 20) / 100;  //20% de impocisiones sobre el sueldo
+            double vH = (sueldo / 160);              //Valor por hora
+            double vD = (vH * 8);                    //Valor por dia
+            double vA1 = 0, vA2 = 0, tD = 0, tP = 0;          //Variables auxiliar contadores y valores totales acumulados
 
             if (chbxDcto.isChecked() == true) {             //Con descuento
                 //horas
                 if (horas < 160) {
                     vA1 = (vH * horas);
                     vA2 = (sueldo - vA1);
-                    tD = (tD + vA2 - descuento) * -1;
+                    tD = (tD + vA2 - descuento) * -1;           // Para que muestre valors con signo negativo
                     tP = tP + vA1 - descuento;
                     lbl_dcto.setText(String.valueOf(tD));
                     lbl_pago.setText(String.valueOf(tP));
                 } else if (horas > 160) {
                     vA1 = (vH * horas);
-                    tD = (tD + vA1 - descuento - sueldo);
+                    tD = (tD + vA1 - descuento - sueldo);       // signo negativo
                     tP = tP + vA1 - descuento;
                     lbl_dcto.setText(String.valueOf(tD));
                     lbl_pago.setText(String.valueOf(tP));
@@ -123,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             // handle error
-            Toast.makeText(getApplication(), "Completa los datos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplication(), "Completa los datos correctamente", Toast.LENGTH_SHORT).show();
         }
         // do stuff
     }
